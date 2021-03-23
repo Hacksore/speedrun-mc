@@ -1,12 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.fabricmc.example.mixin",
+  "package": "net.fabricmc.hacksore.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "InGameHudMixin",
+    "LevelLoadingScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

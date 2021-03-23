@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package net.fabricmc.hacksore;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
@@ -9,7 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 public class GuiRenderer { 
 
   public static String getRunTime() {
-    long timeElapsed = (System.currentTimeMillis() - ExampleMod.runStart);
+    long timeElapsed = (System.currentTimeMillis() - SpeedRunMC.runStart);
     return DurationFormatUtils.formatDuration(timeElapsed, "HH:mm:ss:S");
   }
 
