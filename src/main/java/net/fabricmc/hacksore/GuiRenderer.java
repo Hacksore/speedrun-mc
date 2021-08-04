@@ -1,22 +1,45 @@
 package net.fabricmc.hacksore;
 
+import net.minecraft.client.font.TextRenderer;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class GuiRenderer { 
+public class GuiRenderer {
+  public static long totalPausedDuration = 0;
 
-  public static String getRunTime() {
-    long timeElapsed = (System.currentTimeMillis() - SpeedRunMC.runStart);
-    return DurationFormatUtils.formatDuration(timeElapsed, "HH:mm:ss:S");
+  public static long getElapsedTime() {
+    boolean isPaused = MinecraftClient.getInstance().isPaused();
+
+    if (isPaused) {
+      totalPausedDuration = System.currentTimeMillis() - SpeedRunMC.pauseStart;
+    }
+
+    return (System.currentTimeMillis() - SpeedRunMC.runStart) - totalPausedDuration;
+  }
+
+  public static String getRunTimeString() {
+    long durationMillis = GuiRenderer.getElapsedTime();
+    if (durationMillis > 0) {
+      return DurationFormatUtils.formatDuration(durationMillis, "HH:mm:ss:S");
+    } else {
+      return "nothing yet";
+    }
   }
 
   public static void onRender(MatrixStack matrices, float tickDelta) {
+    MinecraftClient mc = MinecraftClient.getInstance();
+    TextRenderer textRenderer = mc.textRenderer;
 
-    DrawableHelper.fill(matrices, 10, 01, 100, 100, 0x00000000);
-    MinecraftClient.getInstance().textRenderer.draw(matrices, getRunTime(), 10, 10, 0x00FFFFFF);
+    textRenderer.draw(matrices, getRunTimeString(), 10, 10, 0x00FFFFFF);
+
+    String debug = String.format("(%s - %s) - %s", System.currentTimeMillis(), SpeedRunMC.runStart, totalPausedDuration);
+    textRenderer.draw(matrices, debug, 10, 40, 0x00FFFFFF);
+
+    long l = (System.currentTimeMillis() - SpeedRunMC.runStart) - totalPausedDuration;
+    textRenderer.draw(matrices, "" + l, 10, 60, 0x00FFFFFF);
+
 
   }
 }

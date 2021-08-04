@@ -11,8 +11,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LevelLoadingScreen.class)
 public class LevelLoadingScreenMixin {
 
+	// When the GUI for the loading screen is removed consider the game started
 	@Inject(at = @At(value = "HEAD"), method = "removed")
 	private void removed(CallbackInfo cbInfo) {
-		SpeedRunMC.runStart = System.currentTimeMillis();
+		SpeedRunMC.onGameStart();
 	}
 }
